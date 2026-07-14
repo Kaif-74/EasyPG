@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero" style="padding: 40px 5%;">
+    <h1>Find Your Perfect PG in Minutes</h1>
+    <p>Search verified PGs and connect with owners directly.</p>
+    
+    <!-- ADVANCED FILTER FORM -->
+    <form action="" method="GET" style="background: white; padding: 20px; border-radius: 12px; box-shadow: var(--shadow); margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; align-items: end;">
+        
+        <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 0.8rem; font-weight: bold;">Search</label>
+            <input type="text" name="search" value="{{ values.search }}" placeholder="PG Name or Area" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; width: 100%;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 0.8rem; font-weight: bold;">Category</label>
+            <select name="category" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; width: 100%;">
+                <option value="">All Categories</option>
+                <option value="Men" {% if values.category == 'Men' %}selected{% endif %}>Men</option>
+                <option value="Women" {% if values.category == 'Women' %}selected{% endif %}>Women</option>
+                <option value="Co-Living" {% if values.category == 'Co-Living' %}selected{% endif %}>Co-Living</option>
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 0.8rem; font-weight: bold;">Sharing</label>
+            <select name="sharing" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; width: 100%;">
+                <option value="">Any Sharing</option>
+                <option value="Single" {% if values.sharing == 'Single' %}selected{% endif %}>Single</option>
+                <option value="Double" {% if values.sharing == 'Double' %}selected{% endif %}>Double</option>
+                <option value="Triple" {% if values.sharing == 'Triple' %}selected{% endif %}>Triple</option>
+                <option value="Four" {% if values.sharing == 'Four' %}selected{% endif %}>Four Sharing</option>
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+            <label style="font-size: 0.8rem; font-weight: bold;">Max Rent (₹)</label>
+            <input type="number" name="max_rent" value="{{ values.max_rent }}" placeholder="e.g. 10000" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; width: 100%;">
+        </div>
+
+        <button type="submit" class="btn-search" style="height: 42px; padding: 0; width: 100%; background: var(--accent);">Apply Filters</button>
+        <a href="/" style="text-align: center; font-size: 0.8rem; color: var(--gray); text-decoration: none; margin-bottom: 12px;">Clear All</a>
+    </form>
+</section>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2>Showing Results ({{ pgs.count }})</h2>
+    </div>
+    
+    <div class="pg-grid">
+        {% for pg in pgs %}
+        <div class="pg-card">
+            {% if pg.cover_image %}
+                <img src="{{ pg.cover_image.url }}" alt="{{ pg.name }}" class="pg-image">
+            {% else %}
+                <div class="pg-image" style="display: flex; align-items: center; justify-content: center;">No Image</div>
+            {% endif %}
+            
+            <div class="pg-content">
+                <span class="pg-category">{{ pg.category }}</span>
+                <h3 class="pg-title">{{ pg.name }}</h3>
+                <div class="pg-location">
+                    <span>📍</span> {{ pg.location }}, {{ pg.city }}
+                </div>
+                
+                <div style="margin-bottom: 15px; font-size: 0.9rem; color: var(--secondary);">
+                    {% with first_room=pg.rooms.all.0 %}
+                        {% if first_room %}
+                            Starting from <strong>₹{{ first_room.rent_per_bed }}</strong>
+                        {% else %}
+                            Price not added
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <div class="pg-footer">
+                    <a href="{% url 'pg_detail' pg.id %}" style="color: var(--primary); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View Details →</a>
+                    <a href="tel:{{ pg.contact_number }}" class="btn-call">📞 Call</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 80px; background: white; border-radius: 15px; box-shadow: var(--shadow);">
+            <h1 style="font-size: 4rem;">🔍</h1>
+            <h3>No PGs found matching your filters.</h3>
+            <p style="color: var(--gray); margin-top: 10px;">Try removing some filters or searching for a different area.</p>
+            <a href="/" class="btn-accent" style="display: inline-block; margin-top: 20px; text-decoration: none;">Show All PGs</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

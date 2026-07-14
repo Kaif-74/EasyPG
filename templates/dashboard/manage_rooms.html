@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <a href="{% url 'dashboard_home' %}" style="text-decoration: none; color: var(--primary);">← Back to Dashboard</a>
+            <h1 style="margin-top: 10px;">Rooms for {{ pg.name }}</h1>
+        </div>
+        <a href="{% url 'add_room' pg.id %}" class="btn-accent" style="text-decoration: none; font-weight: bold;">+ Add New Room</a>
+    </div>
+
+    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: var(--shadow);">
+        {% if rooms %}
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #eee;">
+                        <th style="padding: 15px 10px;">Room No.</th>
+                        <th style="padding: 15px 10px;">Sharing</th>
+                        <th style="padding: 15px 10px;">Rent</th>
+                        <th style="padding: 15px 10px;">Vacant Beds</th>
+                        <th style="padding: 15px 10px;">Status</th>
+                        <th style="padding: 15px 10px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 15px 10px; font-weight: bold;">{{ room.room_number }}</td>
+                        <td style="padding: 15px 10px;">{{ room.sharing_type }}</td>
+                        <td style="padding: 15px 10px;">₹{{ room.rent_per_bed }}</td>
+                        <td style="padding: 15px 10px;">{{ room.vacant_beds }} / {{ room.total_beds }}</td>
+                        <td style="padding: 15px 10px;">
+                            <span style="padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; 
+                                {% if room.availability_status == 'Available' %} background: #d4edda; color: #155724; 
+                                {% else %} background: #f8d7da; color: #721c24; {% endif %}">
+                                {{ room.availability_status }}
+                            </span>
+                        </td>
+                        <td style="padding: 15px 10px;">
+                            <a href="{% url 'update_vacancy' room.id %}" style="color: var(--success); text-decoration: none; font-weight: 600; font-size: 0.85rem; margin-right: 10px;">Update Vacancy</a>
+                            <a href="{% url 'edit_room' room.id %}" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.85rem; margin-right: 10px;">Edit</a>
+                            <a href="{% url 'delete_room' room.id %}" style="color: var(--danger); text-decoration: none; font-weight: 600; font-size: 0.85rem;">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div style="text-align: center; padding: 40px;">
+                <p style="color: var(--gray);">No rooms added for this PG yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

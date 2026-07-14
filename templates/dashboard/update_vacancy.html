@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 400px; margin-top: 50px;">
+    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: var(--shadow); text-align: center;">
+        <h2 style="margin-bottom: 10px;">Update Vacancy</h2>
+        <p style="color: var(--gray); margin-bottom: 25px;">Room {{ room.room_number }} - {{ room.pg.name }}</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group" style="text-align: left;">
+                <label>Number of Vacant Beds</label>
+                <input type="number" name="vacant_beds" value="{{ room.vacant_beds }}" min="0" max="{{ room.total_beds }}" required 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 10px;">
+                <small style="color: #666;">Total beds in this room: {{ room.total_beds }}</small>
+            </div>
+            
+            <button type="submit" class="btn-block" style="background: var(--success); margin-top: 20px;">Update Now</button>
+            <a href="{% url 'manage_rooms' room.pg.id %}" style="display: block; margin-top: 15px; text-decoration: none; color: var(--gray);">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

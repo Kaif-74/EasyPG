@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 800px;">
+    <div style="margin-bottom: 30px;">
+        <a href="{% url 'dashboard_home' %}" style="text-decoration: none; color: var(--primary);">← Back to Dashboard</a>
+        <h1 style="margin-top: 10px;">Add New PG Property</h1>
+    </div>
+
+    <!-- SHOW FORM ERRORS IF ANY -->
+    {% if form.errors %}
+    <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+        <strong>Please fix the following errors:</strong>
+        {{ form.errors }}
+    </div>
+    {% endif %}
+
+    <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: var(--shadow);">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">Basic Information</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>PG Name *</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <label>Category *</label>
+                    {{ form.category }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description *</label>
+                {{ form.description }}
+            </div>
+
+            <div class="form-group">
+                <label>Contact Number *</label>
+                {{ form.contact_number }}
+            </div>
+
+            <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin: 30px 0 20px;">Location Details</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>City *</label>
+                    {{ form.city }}
+                </div>
+                <div class="form-group">
+                    <label>Area *</label>
+                    {{ form.area }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Locality (Landmark) *</label>
+                {{ form.location }}
+            </div>
+
+            <div class="form-group">
+                <label>Full Address *</label>
+                {{ form.address }}
+            </div>
+
+            <div class="form-group">
+                <label>Google Maps Link</label>
+                {{ form.google_maps_link }}
+            </div>
+
+            <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin: 30px 0 20px;">Facilities & Media</h3>
+            
+            <div class="form-group">
+                <label>Cover Image * (Required)</label>
+                {{ form.cover_image }}
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; background: #f9f9f9; padding: 20px; border-radius: 10px;">
+                <label>{{ form.has_wifi }} WiFi</label>
+                <label>{{ form.has_parking }} Parking</label>
+                <label>{{ form.has_ro_water }} RO Water</label>
+                <label>{{ form.has_food }} Food</label>
+                <label>{{ form.has_laundry }} Laundry</label>
+                <label>{{ form.has_cleaning }} Cleaning</label>
+                <label>{{ form.has_power_backup }} Power Backup</label>
+                <label>{{ form.has_cctv }} CCTV</label>
+            </div>
+
+            <button type="submit" class="btn-block" style="margin-top: 30px; background: var(--success);">Save Property</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 5px; }
+    input[type="checkbox"] { width: auto; margin-right: 10px; }
+    .form-group { margin-bottom: 15px; }
+    label { font-weight: bold; font-size: 0.9rem; }
+</style>
+{% endblock %}

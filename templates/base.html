@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyPG | Find Your Perfect PG</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <nav>
+        <a href="/" class="logo">EasyPG</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            {% if user.is_authenticated %}
+                <!-- Check if the user is the Superuser -->
+                {% if user.is_superuser %}
+                    <a href="/dashboard/admin-panel/" style="color: #f1c40f; font-weight: bold; border: 1px solid #f1c40f; padding: 5px 10px; border-radius: 5px;">Admin Panel</a>
+                {% else %}
+                    <a href="{% url 'dashboard_home' %}">My Dashboard</a>
+                {% endif %}
+
+                <a href="{% url 'logout' %}" style="color: #e74c3c;">Logout</a>
+
+                <!-- This helps us debug who is logged in -->
+                <span style="color: #aaa; font-size: 0.7rem; margin-left: 10px;">
+                    ({{ user.username }})
+                </span>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-accent">Owner Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="container" style="margin-bottom: 0; padding-bottom: 0;">
+        {% for message in messages %}
+            <div style="padding: 15px; border-radius: 8px; margin-bottom: 20px;
+                {% if message.tags == 'success' %} background: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+                {% else %} background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; {% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer style="background: var(--primary); color: white; text-align: center; padding: 40px 0; margin-top: 60px;">
+        <p>&copy;EasyPG. Shaik Mohammed Kaif All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

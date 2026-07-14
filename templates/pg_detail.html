@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- Header Section -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+        <div>
+            <h1 style="font-size: 2.5rem; color: var(--primary);">{{ pg.name }}</h1>
+            <p style="font-size: 1.1rem; color: var(--gray);">📍 {{ pg.address }}, {{ pg.location }}, {{ pg.city }}</p>
+            <span class="pg-category" style="font-size: 1rem; padding: 5px 15px; background: #fff3e0; color: var(--accent); border-radius: 20px; font-weight: bold;">{{ pg.category }}</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="tel:{{ pg.contact_number }}" class="btn-call" style="padding: 12px 25px; font-size: 1rem; background: var(--success); color: white; text-decoration: none; border-radius: 8px;">📞 Call Owner</a>
+            {% if pg.google_maps_link %}
+                <a href="{{ pg.google_maps_link }}" target="_blank" class="btn-accent" style="text-decoration: none; padding: 12px 25px; background: var(--accent); color: white; border-radius: 8px;">🗺️ View on Maps</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Main Image -->
+    <div style="width: 100%; height: 450px; border-radius: 15px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow);">
+        {% if pg.cover_image %}
+            <img src="{{ pg.cover_image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+        {% else %}
+            <div style="width: 100%; height: 100%; background: #ddd; display: flex; align-items: center; justify-content: center;">No Cover Image</div>
+        {% endif %}
+    </div>
+
+    <!-- Gallery Thumbnails -->
+    {% if pg.images.all %}
+    <div style="display: flex; gap: 10px; overflow-x: auto; margin-bottom: 40px; padding-bottom: 10px;">
+        {% for img in pg.images.all %}
+            <img src="{{ img.image.url }}" style="width: 120px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid #eee;">
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Content Grid -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;">
+        <div>
+            <h2 style="margin-bottom: 15px;">About this PG</h2>
+            <p style="color: var(--secondary); font-size: 1.1rem; white-space: pre-line; margin-bottom: 40px;">{{ pg.description }}</p>
+
+            <h2 style="margin-bottom: 20px;">PG Facilities</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 40px;">
+                {% if pg.has_wifi == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">📶 WiFi</div>{% endif %}
+                {% if pg.has_food == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">🍱 Food</div>{% endif %}
+                {% if pg.has_parking == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">🅿️ Parking</div>{% endif %}
+                {% if pg.has_ro_water == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">💧 RO Water</div>{% endif %}
+                {% if pg.has_laundry == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">🧺 Laundry</div>{% endif %}
+                {% if pg.has_cleaning == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">🧹 Cleaning</div>{% endif %}
+                {% if pg.has_power_backup == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">⚡ Power</div>{% endif %}
+                {% if pg.has_cctv == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">🎥 CCTV</div>{% endif %}
+                {% if pg.has_security_guard == True %}<div style="padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 8px; text-align: center; font-weight: 600;">💂 Security</div>{% endif %}
+            </div>
+        </div>
+
+        <div style="background: var(--white); padding: 30px; border-radius: 15px; box-shadow: var(--shadow); height: fit-content;">
+            <h3 style="margin-bottom: 20px;">Quick Info</h3>
+            <div style="margin-bottom: 15px;">
+                <strong>Owner:</strong> 
+                {% if pg.owner.profile %}{{ pg.owner.profile.full_name }}{% else %}Administrator{% endif %}
+            </div>
+            <div style="margin-bottom: 15px;"><strong>City:</strong> {{ pg.city }}</div>
+            <div style="margin-bottom: 15px;"><strong>Area:</strong> {{ pg.area }}</div>
+            <div style="margin-bottom: 15px;"><strong>Contact:</strong> {{ pg.contact_number }}</div>
+        </div>
+    </div>
+
+    <!-- Rooms Section -->
+    <h2 style="margin: 40px 0 20px;">Available Rooms</h2>
+    <div class="pg-grid">
+        {% for room in rooms %}
+        <div class="pg-card" style="padding: 20px; border: 1px solid #eee;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0;">Room {{ room.room_number }}</h3>
+                <span style="background: var(--primary); color: white; padding: 3px 10px; border-radius: 5px; font-size: 0.8rem;">{{ room.sharing_type }}</span>
+            </div>
+            
+            {% if room.room_images.all %}
+            <div style="display: flex; gap: 5px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px;">
+                {% for r_img in room.room_images.all %}
+                    <img src="{{ r_img.image.url }}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;">
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <p style="font-size: 1.5rem; font-weight: 800; color: var(--accent); margin-bottom: 10px;">₹{{ room.rent_per_bed }} <span style="font-size: 0.8rem; color: var(--gray);">/ month</span></p>
+            
+            <div style="margin-bottom: 15px; font-size: 0.9rem;">
+                <div>🛏️ {{ room.vacant_beds }} Beds Vacant</div>
+                <div>💰 Deposit: ₹{{ room.security_deposit }}</div>
+            </div>
+
+            <div style="border-top: 1px solid #eee; padding-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; font-size: 0.8rem;">
+                {% if room.is_ac == True %}<div style="color: #27ae60; font-weight: bold;">❄️ AC</div>{% endif %}
+                {% if room.has_attached_bathroom == True %}<div style="color: #27ae60; font-weight: bold;">🚿 Bathroom</div>{% endif %}
+                {% if room.has_balcony == True %}<div style="color: #27ae60; font-weight: bold;">🌅 Balcony</div>{% endif %}
+                {% if room.has_wardrobe == True %}<div style="color: #27ae60; font-weight: bold;">👗 Wardrobe</div>{% endif %}
+                {% if room.has_study_table == True %}<div style="color: #27ae60; font-weight: bold;">📚 Study Table</div>{% endif %}
+                {% if room.has_fan == True %}<div style="color: #27ae60; font-weight: bold;">🌀 Fan</div>{% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p>No room details added for this PG yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

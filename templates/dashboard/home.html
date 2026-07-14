@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h1>Owner Dashboard</h1>
+            <p style="color: var(--gray);">Welcome back, {{ user.profile.full_name }} | <a href="{% url 'profile_settings' %}" style="color: var(--accent); text-decoration: none; font-weight: bold;">Edit Profile</a></p>
+        </div>
+        <a href="{% url 'add_pg' %}" class="btn-accent" style="text-decoration: none; font-weight: bold;">+ Add New PG</a>
+    </div>
+
+    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: var(--shadow);">
+        <h2 style="margin-bottom: 20px; font-size: 1.2rem;">Your Properties</h2>
+        
+        {% if pgs %}
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #eee;">
+                        <th style="padding: 15px 10px;">PG Name</th>
+                        <th style="padding: 15px 10px;">Location</th>
+                        <th style="padding: 15px 10px;">Category</th>
+                        <th style="padding: 15px 10px;">Rooms</th>
+                        <th style="padding: 15px 10px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pg in pgs %}
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 15px 10px; font-weight: bold;">{{ pg.name }}</td>
+                        <td style="padding: 15px 10px;">{{ pg.location }}</td>
+                        <td style="padding: 15px 10px;">{{ pg.category }}</td>
+                        <td style="padding: 15px 10px;">{{ pg.rooms.count }} Rooms</td>
+                        <td style="padding: 15px 10px;">
+                            <td style="padding: 15px 10px;">
+    <a href="{% url 'edit_pg' pg.id %}" style="color: var(--primary); text-decoration: none; margin-right: 12px; font-size: 0.85rem; font-weight: 600;">Edit info</a>
+    <a href="{% url 'manage_pg_images' pg.id %}" style="color: #6c5ce7; text-decoration: none; margin-right: 12px; font-size: 0.85rem; font-weight: 600;">Gallery</a>
+    <a href="{% url 'manage_rooms' pg.id %}" style="color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Manage Rooms</a>
+</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div style="text-align: center; padding: 40px;">
+                <p style="color: var(--gray); margin-bottom: 20px;">You haven't added any PG listings yet.</p>
+                <a href="#" class="btn-accent" style="text-decoration: none;">Add Your First Property</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

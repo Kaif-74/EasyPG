@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 800px;">
+    <div style="margin-bottom: 30px;">
+        <a href="{% url 'dashboard_home' %}" style="text-decoration: none; color: var(--primary);">← Back to Dashboard</a>
+        <h1 style="margin-top: 10px;">Edit Property: {{ pg.name }}</h1>
+    </div>
+
+    {% if form.errors %}
+    <div style="background: #fff5f5; color: #c53030; padding: 20px; border-radius: 10px; border: 1px solid #feb2b2; margin-bottom: 25px;">
+        <h4 style="margin-bottom: 10px;">Please fix the following:</h4>
+        {{ form.errors }}
+    </div>
+    {% endif %}
+
+    <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: var(--shadow);">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">Basic Information</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>PG Name</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    {{ form.category }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                {{ form.description }}
+            </div>
+
+            <div class="form-group">
+                <label>Contact Number</label>
+                {{ form.contact_number }}
+            </div>
+
+            <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin: 30px 0 20px;">Location Details</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>City</label>
+                    {{ form.city }}
+                </div>
+                <div class="form-group">
+                    <label>Area</label>
+                    {{ form.area }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Locality / Landmark</label>
+                {{ form.location }}
+            </div>
+
+            <div class="form-group">
+                <label>Full Address</label>
+                {{ form.address }}
+            </div>
+
+            <div class="form-group">
+                <label>Google Maps Link</label>
+                {{ form.google_maps_link }}
+            </div>
+
+            <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin: 30px 0 20px;">Facilities & Media</h3>
+            
+            <div class="form-group">
+                <label>Current Cover Image</label><br>
+                {% if pg.cover_image %}
+                    <img src="{{ pg.cover_image.url }}" style="width: 150px; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; border: 1px solid #ddd;">
+                {% endif %}
+                {{ form.cover_image }}
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; background: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <label>{{ form.has_wifi }} WiFi</label>
+                <label>{{ form.has_parking }} Parking</label>
+                <label>{{ form.has_ro_water }} RO Water</label>
+                <label>{{ form.has_food }} Food</label>
+                <label>{{ form.has_laundry }} Laundry</label>
+                <label>{{ form.has_cleaning }} Cleaning</label>
+                <label>{{ form.has_power_backup }} Power Backup</label>
+                <label>{{ form.has_cctv }} CCTV</label>
+                <label>{{ form.has_security_guard }} Security</label>
+            </div>
+
+            <button type="submit" class="btn

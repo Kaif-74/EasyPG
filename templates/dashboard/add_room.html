@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 700px;">
+    <div style="margin-bottom: 30px;">
+        <a href="{% url 'manage_rooms' pg.id %}" style="text-decoration: none; color: var(--primary);">← Back to Room List</a>
+        <h1 style="margin-top: 10px;">Add Room to {{ pg.name }}</h1>
+    </div>
+
+    <!-- ERROR DISPLAY BOX -->
+    {% if form.errors %}
+    <div style="background: #fff5f5; color: #c53030; padding: 20px; border-radius: 10px; border: 1px solid #feb2b2; margin-bottom: 25px;">
+        <h4 style="margin-bottom: 10px;">Please fix the following:</h4>
+        <ul style="margin-left: 20px;">
+            {% for field, errors in form.errors.items %}
+                <li><strong>{{ field|title }}:</strong> {{ errors|striptags }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: var(--shadow);">
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>Room Number *</label>
+                    {{ form.room_number }}
+                </div>
+                <div class="form-group">
+                    <label>Floor Number</label>
+                    {{ form.floor_number }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Sharing Type *</label>
+                {{ form.sharing_type }}
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>Total Beds *</label>
+                    {{ form.total_beds }}
+                </div>
+                <div class="form-group">
+                    <label>Vacant Beds *</label>
+                    {{ form.vacant_beds }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>Rent Per Bed (₹) *</label>
+                    {{ form.rent_per_bed }}
+                </div>
+                <div class="form-group">
+                    <label>Security Deposit (₹)</label>
+                    {{ form.security_deposit }}
+                </div>
+            </div>
+
+            <h3 style="margin: 20px 0 10px; font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 5px;">Room Facilities</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f9f9f9; padding: 15px; border-radius: 8px;">
+                <label>{{ form.is_ac }} AC Room</label>
+                <label>{{ form.has_attached_bathroom }} Attached Bathroom</label>
+                <label>{{ form.has_balcony }} Balcony</label>
+                <label>{{ form.has_wardrobe }} Wardrobe</label>
+                <label>{{ form.has_study_table }} Study Table</label>
+                <label>{{ form.has_fan }} Fan</label>
+            </div>
+
+            <button type="submit" class="btn-block" style="margin-top: 30px; background: var(--primary); cursor: pointer;">Save Room</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; font-size: 1rem; }
+    input[type="checkbox"] { width: auto; margin-right: 10px; }
+    .form-group { margin-bottom: 15px; }
+    label { font-weight: 600; font-size: 0.9rem; color: var(--primary); }
+</style>
+{% endblock %}

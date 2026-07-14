@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 500px; text-align: center; margin-top: 100px;">
+    <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: var(--shadow);">
+        <h1 style="color: var(--danger); margin-bottom: 20px;">Are you sure?</h1>
+        <p style="color: var(--gray); margin-bottom: 30px;">
+            You are about to delete <strong>{{ item.name }}{{ item.room_number }}</strong>. This action cannot be undone.
+        </p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn-block" style="background: var(--danger); margin-bottom: 15px;">Yes, Delete Forever</button>
+            <a href="{% url 'dashboard_home' %}" style="text-decoration: none; color: var(--primary); font-weight: bold;">Cancel and Go Back</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

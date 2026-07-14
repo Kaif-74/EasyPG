@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div style="margin-bottom: 30px;">
+        <a href="{% url 'dashboard_home' %}" style="text-decoration: none; color: var(--primary);">← Back to Dashboard</a>
+        <h1 style="margin-top: 10px;">Gallery for {{ pg.name }}</h1>
+    </div>
+
+    <!-- Upload Section -->
+    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: var(--shadow); margin-bottom: 40px;">
+        <h3>Upload New Photos</h3>
+        <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 20px;">You can select multiple images at once.</p>
+        
+        <form method="POST" enctype="multipart/form-data" style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+            {% csrf_token %}
+            <input type="file" name="images" multiple required style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+            <button type="submit" class="btn-accent" style="border: none; padding: 12px 25px; cursor: pointer;">Upload Photos</button>
+        </form>
+    </div>
+
+    <!-- Gallery Display -->
+    <h3>Current Photos ({{ images.count }})</h3>
+    <div class="pg-grid" style="margin-top: 20px;">
+        {% for img in images %}
+        <div style="background: white; padding: 10px; border-radius: 12px; box-shadow: var(--shadow); text-align: center;">
+            <img src="{{ img.image.url }}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
+            <a href="{% url 'delete_pg_image' img.id %}" style="color: var(--danger); text-decoration: none; font-size: 0.8rem; font-weight: bold;">Remove Photo</a>
+        </div>
+        {% empty %}
+        <p style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--gray);">No gallery photos added yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

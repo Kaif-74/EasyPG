@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-box">
+    <h2 style="text-align: center; margin-bottom: 10px;">Owner Registration</h2>
+    <p style="text-align: center; color: var(--gray); margin-bottom: 30px;">List your property on EasyPG</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <small style="color: var(--danger);">{{ field.errors }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-block" style="background: var(--accent);">Create Account</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 25px; font-size: 0.9rem;">
+        Already an owner? <a href="{% url 'login' %}" style="color: var(--primary); font-weight: bold; text-decoration: none;">Login here</a>
+    </p>
+</div>
+
+<style>
+    /* Specific fix for Django generated inputs in this form */
+    input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+</style>
+{% endblock %}
