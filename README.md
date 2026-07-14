@@ -19,11 +19,5 @@ Check out the live project here: [http://shaikaif.pythonanywhere.com](http://sha
 - **Frontend:** HTML5, CSS3 (Custom Grid & Flexbox)
 - **Deployment:** PythonAnywhere
 - **Version Control:** Git & GitHub
-
-## 📸 Screenshots
-*(You can add images here later by uploading them to GitHub and linking them)*
-
-## 🚀 How to Run Locally
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/EasyPG.git
+live link:
+https://shaikaif.pythonanywhere.com/
